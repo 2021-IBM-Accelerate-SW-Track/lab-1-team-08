@@ -1,7 +1,6 @@
-
-.styles-header-border{
-    width: 100%;
-    height: 5%;
+.styles-infocolumn-border{
+    width: 20%;
+    height: 100%;
     /* border:2px turquoise solid; */
     padding: 3px;
     border-radius: 45px;
@@ -10,12 +9,8 @@
     align-items: center;
     background: linear-gradient(to right, #f00,#0f0);
 }
-.styles-header{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.styles-infocolumn{
     background-color: #000;
-    color: white;
     width: 99%;
     height: 99%;
     /* border:2px turquoise solid; */

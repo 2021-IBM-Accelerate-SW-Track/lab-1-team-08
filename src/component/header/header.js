@@ -1,3 +1,4 @@
+import './header.css';
 export default function Header(){
-    return <div>2021 IBM Accelerate Software Track Lab Boiler Plate</div>
+    return <div className="styles-header-border"><div className="styles-header">Item's name</div></div>
 }

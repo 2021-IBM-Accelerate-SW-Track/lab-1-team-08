@@ -1,0 +1,39 @@
+.styles-listholder-border{
+    width: 100%;
+    height: 90%;
+    /* border:2px turquoise solid; */
+    padding: 0 5px;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to right, #f00,#0f0);
+}
+.styles-listholder{
+    background-color: #000;
+    width: 100%;
+    height: 100%;
+    /* border:2px turquoise solid; */
+     display: flex;
+     flex-direction: column;
+     flex-wrap: wrap;
+     overflow: scroll;
+     scroll-behavior: smooth;
+     
+ 
+}
+
+.styles-listholder::-webkit-scrollbar {
+    margin-left: 10px;
+    width: 15px;               /* width of the entire scrollbar */
+  }
+  
+  .styles-listholder::-webkit-scrollbar-track {
+    background: transparent;        /* color of the tracking area */
+  }
+  
+  .styles-listholder::-webkit-scrollbar-thumb {
+    background-color: #fff;    /* color of the scroll thumb */
+    border-radius: 30px;       /* roundness of the scroll thumb */
+     /* creates padding around scroll thumb */
+  }
