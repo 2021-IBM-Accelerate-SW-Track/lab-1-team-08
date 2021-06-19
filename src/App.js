@@ -57,7 +57,7 @@ function resetAll(){
     <Container>
       {/* add icon */}
     <Fab color="primary" aria-label="add">
-        <AddIcon onClick={addLine}/>
+        <AddIcon data-testid="new-item-button" onClick={addLine}/>
       </Fab>
       {/* edit icon */}
       <Fab color="secondary" aria-label="Edit">
@@ -75,7 +75,7 @@ function resetAll(){
           <ListItem>   
             <ListItemIcon><Checkbox/></ListItemIcon>   
       <form onSubmit={addItem}>
-      <TextField onChange={handleChange} placeholder="Enter Item" variant="outlined"  />
+      <TextField onChange={handleChange} placeholder="Enter Item" variant="outlined" data-testid="new-item-input" />
       </form>
           <ListItemText primary={btime[index]}/>
           <CloseIcon onClick={deleteItem} />
