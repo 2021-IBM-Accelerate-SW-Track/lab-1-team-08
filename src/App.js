@@ -56,9 +56,11 @@ function resetAll(){
     <div className="App">
     <Container>
       {/* add icon */}
+    <button data-testid="new-item-button" onClick={addLine} id="addbtn">
     <Fab color="primary" aria-label="add">
-        <AddIcon data-testid="new-item-button" onClick={addLine}/>
+        <AddIcon  />
       </Fab>
+      </button>
       {/* edit icon */}
       <Fab color="secondary" aria-label="Edit">
         <EditIcon />
