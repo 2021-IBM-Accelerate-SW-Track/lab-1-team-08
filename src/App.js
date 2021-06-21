@@ -14,8 +14,11 @@ import AccessibilityIcon from '@material-ui/icons/Accessibility';
 
 function App() {
   //  get time and date
+  var months = ["Janaury", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  var weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   let time = new Date();
-  let curTime = `${time.toLocaleDateString()} ${time.toLocaleTimeString()}`;
+  let curTime = `${weekdays[time.getDay()]} ${months[time.getMonth()]} ${time.getDate()}, ${time.getFullYear()} ${time.toLocaleTimeString()}`;
+
   // react hook to make the item list storage and access
   const {useState} = React;
   var [test, setTest] = useState([""]);
