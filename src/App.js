@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext,useEffect } from 'react';
 import Header from "./component/header"
 import ListHolder from "./component/list-holder"
 import InfoColumn from "./component/info-column"
@@ -16,7 +16,8 @@ import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Brightness6Icon from '@material-ui/icons/Brightness6';
 import { palette } from '@material-ui/system';
-import DarkModeToggle from "react-dark-mode-toggle";
+import data from './component/item-storage/data.json'
+import Box from '@material-ui/core/Box';
 
 
 
@@ -27,23 +28,25 @@ function App() {
   const initState = [];
   // react hook to make the item list storage and access
   const {useState} = React;
-  const [test, setTest] = useState(initState);
-  let [curTest, setCurTest] = useState();
+  const [newData, setNewData] = useState(data);
+  let [curTest, setCurTest] = useState({});
   const [btime, setTime] = useState(initState);
   const [isDarkMode, setIsDarkMode] = useState(() => false);
+
   
   
 const addItem = index => e =>{
-    console.log(curTest," line 29")
-    console.log(index," line 29")
-    e.preventDefault()
-    console.log("before change add item", test)
-    setTest(test=>[...test,curTest])
-    test[index]=curTest
-    console.log(test[index]," single item")
-    console.log("after change add item", test)
-    setTime(btime =>[...btime, curTime])
-    btime[index]=curTime
+    setNewData(newData.time=curTime)
+    // console.log(curTest," line 29")
+    // console.log(index," line 29")
+    // e.preventDefault()
+    // console.log("before change add item", test)
+    // setTest(test=>[...test,curTest])
+    // test[index]=curTest
+    // console.log(test[index]," single item")
+    // console.log("after change add item", test)
+    // setTime(btime =>[...btime, curTime])
+    // btime[index]=curTime
   
   }
  
@@ -54,22 +57,23 @@ function handleChange(e){
       
 }
 function addLine(){
-  setTest(test =>[...test, ""])
-  
+  // let emptyItem = {"":{"id":"","name":"","time":""}};
+  setNewData(newData=>({...newData, "":{"id":"","name":"","time":""}}));
+  console.log(newData)
 }
 
 function deleteItem (index) {
-  console.log(test.indexOf(test[index]));
-  const newTest = test.filter((items, number) => number != index);
+  console.log(index);
+  // const newTest = test.filter((items, number) => number != index);
   // console.log(newTest, "new test test line 57");
   // console.log(test, " before new test line 57");
-  setTest(newTest);
+  // setTest(newTest);
   // console.log(test, "after new test line 57");
  
  };
 
 function resetAll(){
-  setTest(initState);
+  // setTest(initState);
   setTime(initState);
   
   console.log("worked"," line 48")
@@ -81,15 +85,16 @@ let theme = createMuiTheme({
 });
 
   console.log(theme.palette.type)
-  theme.palette.type.replace('light', 'dark');
+  
 
 
   return (
     <div className="App">
 
-      <DarkModeToggle onChange={setIsDarkMode} checked={isDarkMode} size={70}/>
       <ThemeProvider theme={theme}>
-    <Container>
+        
+    <Container id="container">
+      
       <Fab color="primary" aria-label="Edit">
         <EditIcon />
       </Fab> 
@@ -99,13 +104,14 @@ let theme = createMuiTheme({
       </Fab>
       
       {/* Item List */}
+      <Box>
        <List>
         
-        {test.map((item,index)=>(
+        {Object.keys(newData).map((item,index)=>(
           <ListItem>   
             <ListItemIcon><Checkbox/></ListItemIcon>   
       <form onSubmit={addItem(index)}>
-      <TextField onChange={handleChange} placeholder="Enter Item" variant="outlined" />
+      <TextField  onChange={handleChange} placeholder="Enter Item" variant="outlined" data-testid="new-item-input"/>
       </form>
       <ListItemText primary={item}/>
           <ListItemText primary={btime[index]}/>
@@ -117,9 +123,14 @@ let theme = createMuiTheme({
           ))}
         
          </List>
-         <Fab onClick={addLine} data-testid="new-item-button" color="primary" aria-label="add">
+         </Box>
+         <Box id="box">
+      
+         </Box>
+         
+         <IconButton onClick={addLine} data-testid="new-item-button" color="primary" aria-label="add">
         <AddIcon  />
-      </Fab>
+      </IconButton>
         </Container>
         </ThemeProvider>
        

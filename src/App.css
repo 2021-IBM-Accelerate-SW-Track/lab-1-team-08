@@ -48,3 +48,13 @@ border: none;
   background: none;
   
 }
+#container{
+  display: flex;
+  background: #eeeeee;
+  justify-content: space-around;
+}
+#box{
+  border: 2px black solid;
+  width:200px;
+  
+}
