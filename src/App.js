@@ -18,30 +18,56 @@ function App() {
   let curTime = `${time.toLocaleDateString()} ${time.toLocaleTimeString()}`;
   // react hook to make the item list storage and access
   const {useState} = React;
-  const [test, setTest] = useState([""]);
+  var [test, setTest] = useState([""]);
   let [curTest, setCurTest] = useState("");
-  const [btime, setTime] = useState([]);
+  const [btime, setTime] = useState([curTime]);
+  const dup = {
+    noDuplicate: <span>No duplicates</span>,
+    hasDuplicate: <span>Please remove duplicate before continuing</span>
+  }
+  const [duplicate, setDuplicate] = useState("noDuplicate");
   
   function addItem(e){
     e.preventDefault();
-    setTest(test =>[...test, curTest])
-    setTime(btime =>[...btime, curTime])
+    console.log(curTest)
+    setTest(test => [...test, curTest])
+    // setTest(test => [...test, e.target.value])
+    setTime(btime => [...btime, curTime])
     
     console.log(e.target.value," line 29", test)
+
+    if((new Set(test)).size !== test.length) {
+      setDuplicate("hasDuplicate");
+    }
   }
  
 function handleChange(e){
-      setCurTest(curTest=e.target.value)
-      console.log(curTest," line 33")
+  console.log("before", curTest, test, e.target.value)
+    setCurTest(curTest=e.target.value)
+    if(test.includes(e.target.value)) {
+      setDuplicate("hasDuplicate");
+    }
+    else {
+      setDuplicate("noDuplicate")
+    }
+    // setTest(test => ([...test.slice(0, test.length - 1), e.target.value]));
+    // setTime([...btime.slice(btime.length - 1), curTime])
+    console.log(curTest, " line 33", test)
+    // console.log(e.target.value)
+    // console.log(test[test.length - 1])
+    // console.log(test)
 }
 function addLine(){
-  setTest(test =>[...test, ""])
+  setTest(test => [...test, ""])
+  setTime(btime => [...btime, curTime])
+  console.log("addLine", test)
 }
 
 const deleteItem = (e) => {
-  const name = e.target.getAttribute("name")
+   const name = e.target.getAttribute("name")
    setTest(test.filter(item => item.name !== name));
    console.log(e.target.parentElement, "deleted");
+   console.log(test);
  };
 function resetAll(){
   setTest([]);
@@ -56,9 +82,12 @@ function resetAll(){
     <div className="App">
     <Container>
       {/* add icon */}
+      <div>
+        {dup[duplicate]}
+      </div>
     <button data-testid="new-item-button" onClick={addLine} id="addbtn">
     <Fab color="primary" aria-label="add">
-        <AddIcon  />
+        <AddIcon/>
       </Fab>
       </button>
       {/* edit icon */}
