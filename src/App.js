@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Header from "./component/header"
 import ListHolder from "./component/list-holder"
 import InfoColumn from "./component/info-column"
 import './App.css';
-import { Checkbox, Container, List,ListItem,ListItemIcon,ListItemText,Fab } from "@material-ui/core";
+import { Checkbox, Container, List,ListItem,ListItemIcon,ListItemText,Fab,IconButton } from "@material-ui/core";
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import CloseIcon from '@material-ui/icons/Close';
@@ -11,61 +11,91 @@ import TextField from '@material-ui/core/TextField';
 import ListItems from './component/tasks';
 import RotateLeftIcon from '@material-ui/icons/RotateLeft';
 import AccessibilityIcon from '@material-ui/icons/Accessibility';
+import Button from './component/buttons'
+import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Brightness6Icon from '@material-ui/icons/Brightness6';
+import { palette } from '@material-ui/system';
+import DarkModeToggle from "react-dark-mode-toggle";
+
+
 
 function App() {
   //  get time and date
   let time = new Date();
   let curTime = `${time.toLocaleDateString()} ${time.toLocaleTimeString()}`;
+  const initState = [];
   // react hook to make the item list storage and access
   const {useState} = React;
-  const [test, setTest] = useState([""]);
-  let [curTest, setCurTest] = useState("");
-  const [btime, setTime] = useState([]);
+  const [test, setTest] = useState(initState);
+  let [curTest, setCurTest] = useState();
+  const [btime, setTime] = useState(initState);
+  const [isDarkMode, setIsDarkMode] = useState(() => false);
   
-  function addItem(e){
-    e.preventDefault();
-    setTest(test =>[...test, curTest])
+  
+const addItem = index => e =>{
+    console.log(curTest," line 29")
+    console.log(index," line 29")
+    e.preventDefault()
+    console.log("before change add item", test)
+    setTest(test=>[...test,curTest])
+    test[index]=curTest
+    console.log(test[index]," single item")
+    console.log("after change add item", test)
     setTime(btime =>[...btime, curTime])
-    
-    console.log(e.target.value," line 29", test)
+    btime[index]=curTime
+  
   }
  
 function handleChange(e){
-      setCurTest(curTest=e.target.value)
-      console.log(curTest," line 33")
+  console.log(curTest," line 33")
+ setCurTest(curTest = e.target.value)
+
+      
 }
 function addLine(){
   setTest(test =>[...test, ""])
+  
 }
 
-const deleteItem = (e) => {
-  const name = e.target.getAttribute("name")
-   setTest(test.filter(item => item.name !== name));
-   console.log(e.target.parentElement, "deleted");
+function deleteItem (index) {
+  console.log(test.indexOf(test[index]));
+  const newTest = test.filter((items, number) => number != index);
+  // console.log(newTest, "new test test line 57");
+  // console.log(test, " before new test line 57");
+  setTest(newTest);
+  // console.log(test, "after new test line 57");
+ 
  };
+
 function resetAll(){
-  setTest([]);
-  setTime([]);
+  setTest(initState);
+  setTime(initState);
   
   console.log("worked"," line 48")
 }
- const closeBtn = {
-  background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
-};
+let theme = createMuiTheme({
+   palette:{
+     type: 'light'
+   }
+});
+
+  console.log(theme.palette.type)
+  theme.palette.type.replace('light', 'dark');
+
+
   return (
     <div className="App">
+
+      <DarkModeToggle onChange={setIsDarkMode} checked={isDarkMode} size={70}/>
+      <ThemeProvider theme={theme}>
     <Container>
-      {/* add icon */}
-    <Fab color="primary" aria-label="add">
-        <AddIcon onClick={addLine}/>
-      </Fab>
-      {/* edit icon */}
-      <Fab color="secondary" aria-label="Edit">
+      <Fab color="primary" aria-label="Edit">
         <EditIcon />
       </Fab> 
       
-      <Fab color="secondary" aria-label="Edit">
-        <RotateLeftIcon onClick={resetAll}/>
+      <Fab color="primary"  onClick={resetAll}>
+        <RotateLeftIcon />
       </Fab>
       
       {/* Item List */}
@@ -74,16 +104,25 @@ function resetAll(){
         {test.map((item,index)=>(
           <ListItem>   
             <ListItemIcon><Checkbox/></ListItemIcon>   
-      <form onSubmit={addItem}>
-      <TextField onChange={handleChange} placeholder="Enter Item" variant="outlined"  />
+      <form onSubmit={addItem(index)}>
+      <TextField onChange={handleChange} placeholder="Enter Item" variant="outlined" />
       </form>
+      <ListItemText primary={item}/>
           <ListItemText primary={btime[index]}/>
-          <CloseIcon onClick={deleteItem} />
+          {/* <Fab color="secondary"  value={index}>
+          <CloseIcon/>
+          </Fab> */}
+          <Fab onClick={()=>deleteItem(index)} ><CloseIcon /></Fab>
           </ListItem>
           ))}
         
          </List>
+         <Fab onClick={addLine} data-testid="new-item-button" color="primary" aria-label="add">
+        <AddIcon  />
+      </Fab>
         </Container>
+        </ThemeProvider>
+       
       {/* add values as children
     <InfoColumn children="groceries"/>
     <div className="middle-container">
