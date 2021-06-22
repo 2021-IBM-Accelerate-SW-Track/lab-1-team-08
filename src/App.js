@@ -21,23 +21,30 @@ import Box from '@material-ui/core/Box';
 
 function App() {
   //  get time and date
+  var months = ["Janaury", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  var weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   let time = new Date();
-  let curTime = `${time.toLocaleDateString()} ${time.toLocaleTimeString()}`;
+  let curTime = `${weekdays[time.getDay()]} ${months[time.getMonth()]} ${time.getDate()}, ${time.getFullYear()} ${time.toLocaleTimeString()}`;
   const initState = [];
   // react hook to make the item list storage and access
   const {useState} = React;
   const [newData, setNewData] = useState(data);
+  const [cNewData, setcNewData] = useState(data);
   let [curName, setCurName] = useState([]);
   const [btime, setTime] = useState(curTime);
   const [isDarkMode, setIsDarkMode] = useState(() => false);
- 
+  const dup = {
+    noDuplicate: <span>No duplicates</span>,
+    hasDuplicate: <span>Please remove duplicate before continuing</span>
+  }
+  const [duplicate, setDuplicate] = useState("noDuplicate");
   console.log(newData);
 
 const addItem = item => e =>{
   e.preventDefault()
-  
   newData[item].name=curName;
   newData[item].time=curTime;
+  
   
     // console.loName," line 29")
     // console.log(index," line 29")
@@ -54,8 +61,8 @@ const addItem = item => e =>{
 
 
 function handleChange(e){
- setCurName(curName = e.target.value)
- 
+  setCurName(curName = e.target.value)
+
 }
 
 function addLine(){
@@ -77,6 +84,13 @@ function resetAll(){
   setTime(initState);
   console.log("worked"," line 48")
 }
+function completedItem(item){
+  setcNewData(setcNewData=>[...setcNewData,newData[item]]);
+  // cNewData[item].time=newData[item].time;
+  console.log(newData[item].name, 'line 81');
+  // const updatedItemList = Object.keys(newData).filter((ucitem) => ucitem != item);
+  // setNewData(updatedItemList);
+}
 
 let theme = createMuiTheme({
    palette:{
@@ -97,8 +111,10 @@ console.log(Object.keys(newData),'line 82');
       <Fab onClick={addLine} data-testid="new-item-button" color="primary" aria-label="add">
         <AddIcon  />
       </Fab> 
-    <Container id="container">
-      
+    <Container >
+    <div>
+        {dup[duplicate]}
+      </div>
       
       {/* Item List */}
       <Box>
@@ -106,11 +122,11 @@ console.log(Object.keys(newData),'line 82');
         
         {Object.keys(newData).map((item)=>(
           <ListItem>   
-            <ListItemIcon><Checkbox/></ListItemIcon>   
+            <ListItemIcon><Checkbox onChange={()=>completedItem(item)}/></ListItemIcon>   
       <form onSubmit={addItem(item)}>
       <TextField onChange={handleChange} placeholder={item} variant="outlined" data-testid="new-item-input"/>
       </form>
-      <ListItemText  primary={newData[item].name}/>
+      <ListItemText primary={newData[item].name}/>
           <ListItemText  primary={newData[item].time}/>
           {/* <Fab color="secondary"  value={index}>
           <CloseIcon/>
@@ -121,6 +137,18 @@ console.log(Object.keys(newData),'line 82');
          </List>
          </Box>
          <Box id="box">
+           <List>
+         {Object.keys(cNewData).map((item)=>(
+          <ListItem>   
+      
+          <ListItemText  primary={cNewData[item].time}/>
+          {/* <Fab color="secondary"  value={index}>
+          <CloseIcon/>
+          </Fab> */}
+          
+          </ListItem>
+          ))}
+         </List>
          </Box>
          
         </Container>

@@ -55,6 +55,8 @@ border: none;
 }
 #box{
   border: 2px black solid;
-  width:200px;
+ 
+  display: flex;
+  flex-wrap: wrap;
   
 }
