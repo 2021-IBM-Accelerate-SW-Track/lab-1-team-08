@@ -1,4 +1,4 @@
-import React, { useContext,useEffect } from 'react';
+import React, {forceUpdate,useCallback,useContext,useEffect } from 'react';
 import Header from "./component/header"
 import ListHolder from "./component/list-holder"
 import InfoColumn from "./component/info-column"
@@ -19,8 +19,6 @@ import { palette } from '@material-ui/system';
 import data from './component/item-storage/data.json'
 import Box from '@material-ui/core/Box';
 
-
-
 function App() {
   //  get time and date
   let time = new Date();
@@ -29,109 +27,104 @@ function App() {
   // react hook to make the item list storage and access
   const {useState} = React;
   const [newData, setNewData] = useState(data);
-  let [curTest, setCurTest] = useState({});
-  const [btime, setTime] = useState(initState);
+  let [curName, setCurName] = useState([]);
+  const [btime, setTime] = useState(curTime);
   const [isDarkMode, setIsDarkMode] = useState(() => false);
+ 
+  console.log(newData);
 
+const addItem = item => e =>{
+  e.preventDefault()
   
+  newData[item].name=curName;
+  newData[item].time=curTime;
   
-const addItem = index => e =>{
-    setNewData(newData.time=curTime)
-    // console.log(curTest," line 29")
+    // console.loName," line 29")
     // console.log(index," line 29")
     // e.preventDefault()
     // console.log("before change add item", test)
-    // setTest(test=>[...test,curTest])
-    // test[index]=curTest
+    // setTest(test=>[...tesName])
+    // test[indexName
     // console.log(test[index]," single item")
     // console.log("after change add item", test)
     // setTime(btime =>[...btime, curTime])
     // btime[index]=curTime
-  
-  }
  
-function handleChange(e){
-  console.log(curTest," line 33")
- setCurTest(curTest = e.target.value)
+  }
 
-      
+
+function handleChange(e){
+ setCurName(curName = e.target.value)
+ 
 }
+
 function addLine(){
   // let emptyItem = {"":{"id":"","name":"","time":""}};
-  setNewData(newData=>({...newData, "":{"id":"","name":"","time":""}}));
-  console.log(newData)
+  setNewData(newData=>[...newData, {"name":"","time":""} ]);
 }
 
 function deleteItem (index) {
-  console.log(index);
-  // const newTest = test.filter((items, number) => number != index);
+  console.log(index, 'line 70');
+  const delItemList = Object.keys(newData).filter((item) => item != index);
   // console.log(newTest, "new test test line 57");
   // console.log(test, " before new test line 57");
-  // setTest(newTest);
+   setNewData(delItemList);
   // console.log(test, "after new test line 57");
- 
  };
 
 function resetAll(){
   // setTest(initState);
   setTime(initState);
-  
   console.log("worked"," line 48")
 }
+
 let theme = createMuiTheme({
    palette:{
      type: 'light'
    }
 });
-
-  console.log(theme.palette.type)
-  
-
-
+console.log(Object.keys(newData),'line 82');
   return (
     <div className="App">
 
       <ThemeProvider theme={theme}>
-        
-    <Container id="container">
-      
       <Fab color="primary" aria-label="Edit">
         <EditIcon />
       </Fab> 
-      
       <Fab color="primary"  onClick={resetAll}>
         <RotateLeftIcon />
       </Fab>
+      <Fab onClick={addLine} data-testid="new-item-button" color="primary" aria-label="add">
+        <AddIcon  />
+      </Fab> 
+    <Container id="container">
+      
       
       {/* Item List */}
       <Box>
        <List>
         
-        {Object.keys(newData).map((item,index)=>(
+        {Object.keys(newData).map((item)=>(
           <ListItem>   
             <ListItemIcon><Checkbox/></ListItemIcon>   
-      <form onSubmit={addItem(index)}>
-      <TextField  onChange={handleChange} placeholder="Enter Item" variant="outlined" data-testid="new-item-input"/>
+      <form onSubmit={addItem(item)}>
+      <TextField onChange={handleChange} placeholder={item} variant="outlined" data-testid="new-item-input"/>
       </form>
-      <ListItemText primary={item}/>
-          <ListItemText primary={btime[index]}/>
+      <ListItemText  primary={newData[item].name}/>
+          <ListItemText  primary={newData[item].time}/>
           {/* <Fab color="secondary"  value={index}>
           <CloseIcon/>
           </Fab> */}
-          <Fab onClick={()=>deleteItem(index)} ><CloseIcon /></Fab>
+          <Fab onClick={()=>deleteItem(item)} ><CloseIcon /></Fab>
           </ListItem>
           ))}
-        
          </List>
          </Box>
          <Box id="box">
-      
          </Box>
          
-         <IconButton onClick={addLine} data-testid="new-item-button" color="primary" aria-label="add">
-        <AddIcon  />
-      </IconButton>
         </Container>
+        
         </ThemeProvider>
        
       {/* add values as children
