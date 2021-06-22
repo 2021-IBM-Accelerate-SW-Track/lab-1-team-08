@@ -28,6 +28,7 @@ function App() {
   const initState = [];
   // react hook to make the item list storage and access
   const {useState} = React;
+<<<<<<< HEAD
   const [newData, setNewData] = useState(data);
   const [cNewData, setcNewData] = useState(data);
   let [curName, setCurName] = useState([]);
@@ -36,6 +37,29 @@ function App() {
   const dup = {
     noDuplicate: <span>No duplicates</span>,
     hasDuplicate: <span>Please remove duplicate before continuing</span>
+=======
+  var [test, setTest] = useState([""]);
+  let [curTest, setCurTest] = useState("");
+  const [btime, setTime] = useState([curTime]);
+  const dup = {
+    noDuplicate: <span>No duplicates</span>,
+    hasDuplicate: <span>Please remove duplicate before continuing</span>
+  }
+  const [duplicate, setDuplicate] = useState("noDuplicate");
+  
+  function addItem(e){
+    e.preventDefault();
+    console.log(curTest)
+    setTest(test => [...test, curTest])
+    // setTest(test => [...test, e.target.value])
+    setTime(btime => [...btime, curTime])
+    
+    console.log(e.target.value," line 29", test)
+
+    if((new Set(test)).size !== test.length) {
+      setDuplicate("hasDuplicate");
+    }
+>>>>>>> dd9c63801f5dccc3d480a25de77fa04444f3a618
   }
   const [duplicate, setDuplicate] = useState("noDuplicate");
   console.log(newData);
@@ -61,11 +85,29 @@ const addItem = item => e =>{
 
 
 function handleChange(e){
+<<<<<<< HEAD
   setCurName(curName = e.target.value)
 
+=======
+  console.log("before", curTest, test, e.target.value)
+    setCurTest(curTest=e.target.value)
+    if(test.includes(e.target.value)) {
+      setDuplicate("hasDuplicate");
+    }
+    else {
+      setDuplicate("noDuplicate")
+    }
+    // setTest(test => ([...test.slice(0, test.length - 1), e.target.value]));
+    // setTime([...btime.slice(btime.length - 1), curTime])
+    console.log(curTest, " line 33", test)
+    // console.log(e.target.value)
+    // console.log(test[test.length - 1])
+    // console.log(test)
+>>>>>>> dd9c63801f5dccc3d480a25de77fa04444f3a618
 }
 
 function addLine(){
+<<<<<<< HEAD
   // let emptyItem = {"":{"id":"","name":"","time":""}};
   setNewData(newData=>[...newData, {"name":"","time":""} ]);
 }
@@ -77,6 +119,18 @@ function deleteItem (index) {
   // console.log(test, " before new test line 57");
    setNewData(delItemList);
   // console.log(test, "after new test line 57");
+=======
+  setTest(test => [...test, ""])
+  setTime(btime => [...btime, curTime])
+  console.log("addLine", test)
+}
+
+const deleteItem = (e) => {
+   const name = e.target.getAttribute("name")
+   setTest(test.filter(item => item.name !== name));
+   console.log(e.target.parentElement, "deleted");
+   console.log(test);
+>>>>>>> dd9c63801f5dccc3d480a25de77fa04444f3a618
  };
 
 function resetAll(){
@@ -100,9 +154,24 @@ let theme = createMuiTheme({
 console.log(Object.keys(newData),'line 82');
   return (
     <div className="App">
+<<<<<<< HEAD
 
       <ThemeProvider theme={theme}>
       <Fab color="primary" aria-label="Edit">
+=======
+    <Container>
+      {/* add icon */}
+      <div>
+        {dup[duplicate]}
+      </div>
+    <button data-testid="new-item-button" onClick={addLine} id="addbtn">
+    <Fab color="primary" aria-label="add">
+        <AddIcon/>
+      </Fab>
+      </button>
+      {/* edit icon */}
+      <Fab color="secondary" aria-label="Edit">
+>>>>>>> dd9c63801f5dccc3d480a25de77fa04444f3a618
         <EditIcon />
       </Fab> 
       <Fab color="primary"  onClick={resetAll}>
@@ -122,9 +191,15 @@ console.log(Object.keys(newData),'line 82');
         
         {Object.keys(newData).map((item)=>(
           <ListItem>   
+<<<<<<< HEAD
             <ListItemIcon><Checkbox onChange={()=>completedItem(item)}/></ListItemIcon>   
       <form onSubmit={addItem(item)}>
       <TextField onChange={handleChange} placeholder={item} variant="outlined" data-testid="new-item-input"/>
+=======
+            <ListItemIcon><Checkbox/></ListItemIcon>   
+      <form onSubmit={addItem}>
+      <TextField onChange={handleChange} placeholder="Enter Item" variant="outlined" data-testid="new-item-input" />
+>>>>>>> dd9c63801f5dccc3d480a25de77fa04444f3a618
       </form>
       <ListItemText primary={newData[item].name}/>
           <ListItemText  primary={newData[item].time}/>

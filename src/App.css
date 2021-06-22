@@ -43,6 +43,7 @@ div{
   justify-content: space-between;
   align-items: center;
 }
+<<<<<<< HEAD
 .addbtn{
 border: none;
   background: none;
@@ -60,3 +61,9 @@ border: none;
   flex-wrap: wrap;
   
 }
+=======
+#addbtn{
+  border: none;
+  background: none;
+}
+>>>>>>> dd9c63801f5dccc3d480a25de77fa04444f3a618
